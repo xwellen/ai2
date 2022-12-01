@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 
-def find_path_and_draw(graph, subgraph_edges, pos, title_string="Untitled", print_nodes=True, mark_destination=True):
+def find_path_and_draw(graph, subgraph_edges, pos, title_string="Untitled", print_nodes=True, mark_destination=True, mark_red=True):
     G__ = nx.Graph()
     G__.add_edges_from(subgraph_edges)
     current_shortest_path_verts = nx.shortest_path(G__, os.getenv("SOURCE_NODE"), os.getenv("DESTINATION_NODE"))
@@ -18,7 +18,8 @@ def find_path_and_draw(graph, subgraph_edges, pos, title_string="Untitled", prin
 
     nx.draw_networkx_edges(graph, pos, edgelist=graph.edges)
     # red color for all subgraph edges
-    nx.draw_networkx_edges(graph, pos, edgelist=subgraph_edges, edge_color=(1, 0, 0), width=2)
+    if mark_red:
+        nx.draw_networkx_edges(graph, pos, edgelist=subgraph_edges, edge_color=(1, 0, 0), width=2)
     # yellow color for current path
     nx.draw_networkx_edges(graph, pos, edgelist=current_path, edge_color='#ffee00', width=2)
     # all nodes
