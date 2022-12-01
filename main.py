@@ -1,10 +1,14 @@
-# %% read data from csv and show graph
+# %% inits
+import os
+
 import matplotlib.pyplot as plt
 import networkx as nx
+from find_path_and_draw import find_path_and_draw as fpd
 
-SOURCE_NODE = "Брест"
-DESTINATION_NODE = "Казань"
+SOURCE_NODE = os.getenv("SOURCE_NODE") # Брест
+DESTINATION_NODE = os.getenv("DESTINATION_NODE") # Казань
 
+# %% read data from csv and show graph
 G = list()
 with open("data.csv", "r") as dataset:
     for line in dataset.readlines():
@@ -38,15 +42,9 @@ for e in nx.bfs_edges(G_, source=SOURCE_NODE):
 print("bfs edges till DESTINATION_NODE:")
 for e in bfs_edges:
     print(e)
-# %% find and print bfs path
-G__ = nx.Graph()
-G__.add_edges_from(bfs_edges)
-bfs_shortest_path_verts = nx.shortest_path(G__, SOURCE_NODE, DESTINATION_NODE)
-bfs_path = list()
-for i in range(len(bfs_shortest_path_verts) - 1):
-    bfs_path.append((bfs_shortest_path_verts[i], bfs_shortest_path_verts[i + 1]))
-print("bfs path:")
-print(bfs_path)
+# %% bfs path on plain graph
+fpd(G_, bfs_edges, pos, title_string="bfs path")
+
 # %% bfs draw tree
 bfs_tree_ = nx.bfs_tree(G_, source=SOURCE_NODE)
 for i, layer in enumerate(nx.topological_generations(bfs_tree_)):
